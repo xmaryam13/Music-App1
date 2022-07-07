@@ -3,11 +3,54 @@ from threading import Thread
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from playsound import playsound
+import pygame
+from pygame import mixer 
+import os
+import time
+
 
 PORT = 8050
 IP_ADDRESS = '127.0.0.1'
 SERVER = None
 BUFFER_SIZE = 4096
+
+
+name = None
+listbox = None
+filePathLabel = None
+
+global song_counter
+song_counter = 0
+
+
+for file in os.listdir('shared_files'):
+    filename = os.fsdecode(file)
+    listbox.insert(song_counter,filename)
+    song_counter = song_counter + 1
+    
+def play():
+    global song_selected
+    song_selected = listbox.get(ANCHOR)
+    
+    pygame
+    mixer.init()
+    mixer.music.load('shared_files/' + song_selected)
+    mixer.music.play()
+    if (song_selected != ""):
+        infoLabel.configure(text='Now Playing: ' + song_selected)
+    else:
+        infoLabel.configure(text="")
+        
+
+def stop():
+    global song_selected
+    pygame
+    mixer.init()
+    mixer.music.load('shared_files/', song_selected)
+    mixer.music.pause()
+    infoLabel.configure(text= "")
+    
 
 
 
@@ -27,10 +70,10 @@ def musicWindow():
     scrollbar1.place(relheight = 1, relx=1)
     scrollbar1.config(command = listBox.yview)
     
-    playButton = Button(window, text='Play',width = 10, bd = 1, bg = 'SkyBlue',font = ('Calibri',10))
+    playButton = Button(window, text='Play',width = 10, bd = 1, bg = 'SkyBlue',font = ('Calibri',10),command = play)
     playButton.place(x=30,y=200)
     
-    stopButton = Button(window, text='Stop',bd=1,width=10,bg='SkyBlue',font = ('Calibri',10))
+    stopButton = Button(window, text='Stop',bd=1,width=10,bg='SkyBlue',font = ('Calibri',10),command = stop)
     stopButton.place(x=200,y=200)
     
     uploadButton = Button(window, text = 'Upload',width = 10, bd = 1, bg = 'SkyBlue',font = ('Calibri',10))
